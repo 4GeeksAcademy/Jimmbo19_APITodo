@@ -34,13 +34,15 @@ const Prueba = () => {
     };
 
     const deleteItem = (id) => {
-        fetch('https://playground.4geeks.com/todo/todos/${id}', {
+        fetch(`https://playground.4geeks.com/todo/todos/${id}`, {
               method: "DELETE",
                 redirect: "follow"
         })
         .then((response) => response.text())
-        .then((result) => console.log(result))
-        setTodos(prevTodos=> prevTodos.filter(todo=> todo.id !==id))
+        .then((data) => {
+            console.log(data); 
+            setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id)); 
+        })
         .catch((error) => console.error(error));
     };
 
