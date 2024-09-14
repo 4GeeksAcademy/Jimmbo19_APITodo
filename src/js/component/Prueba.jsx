@@ -26,26 +26,38 @@ const Prueba = () => {
         })
         .then((response) => response.json())
         .then((data) => console.log(data))
-        setTodos0(prevTodos => [...prevTodos, inputValue])
+        setTodos(prevTodos => [...prevTodos, { label: inputValue, is_done: false }])
            
         setInputValue('')
 
         .catch(error => console.error('Error posting data:', error));
     };
 
+    const deleteItem = (id) => {
+        fetch('https://playground.4geeks.com/todo/todos/${id}', {
+              method: "DELETE",
+                redirect: "follow"
+        })
+        .then((response) => response.text())
+        .then((result) => console.log(result))
+        setTodos(prevTodos=> prevTodos.filter(todo=> todo.id !==id))
+        .catch((error) => console.error(error));
+    };
+
+
     return (
         <>
             <h1>HOLA</h1>
             <button onClick={getItems}>Get</button>
             <button onClick={postItem}>Post</button>
-            <input type="text" 
-            onKeyDown={postItem} 
+            
+            <input type="text"  
             onChange={e => setInputValue(e.target.value)} 
             value={inputValue} ></input>
             <ul>
                 {todos.length > 0 ? (
                     todos.map((todo, index) => (
-                        <li key={index}>{todo.label}</li> 
+                        <li key={index}>{todo.label}  <button onClick={() => deleteItem(todo.id)}>Delete</button></li> 
                     ))
                 ) : (
                     <li>No hay tareas disponibles</li>
