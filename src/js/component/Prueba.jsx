@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect  } from 'react';
 
 const Prueba = () => {
     const [todos, setTodos] = useState([]);
@@ -15,6 +15,7 @@ const Prueba = () => {
             .catch(error => console.error('Error fetching data:', error));
     };
 
+    useEffect(()=>{getItems();},[]);
     const postItem = (e) => {
         fetch('https://playground.4geeks.com/todo/todos/JaimeLista', {
             method: 'POST',
@@ -26,11 +27,18 @@ const Prueba = () => {
         })
         .then((response) => response.json())
         .then((data) => console.log(data))
+        
         setTodos(prevTodos => [...prevTodos, { label: inputValue, is_done: false }])
            
         setInputValue('')
 
         .catch(error => console.error('Error posting data:', error));
+    };
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            postItem();
+        }
     };
 
     const deleteItem = (id) => {
@@ -49,22 +57,31 @@ const Prueba = () => {
 
     return (
         <>
-            <h1>HOLA</h1>
-            <button onClick={getItems}>Get</button>
-            <button onClick={postItem}>Post</button>
-            
-            <input type="text"  
-            onChange={e => setInputValue(e.target.value)} 
-            value={inputValue} ></input>
-            <ul>
+
+        <div className=" container text-center margin=3">
+             <h1 className="display-2 lead">TODOS</h1>
+                <div>
+                        <input type="text"   className="form-control list-inline"
+                        onChange={e => setInputValue(e.target.value)} 
+                        onKeyDown={handleKeyDown}
+                        value={inputValue} 
+                        placeholder="What needs to be done?"
+                        ></input>
+                </div>
+            <ul className="list-group">
                 {todos.length > 0 ? (
                     todos.map((todo, index) => (
-                        <li key={index}>{todo.label}  <button onClick={() => deleteItem(todo.id)}>Delete</button></li> 
+                        <li className="list-group-item shadow p-3  bg-body-tertiary rounded d-flex justify-content-between" key={index}>{todo.label}  
+                        <button type="button" className="btn-close " aria-label="Close"  onClick={() => deleteItem(todo.id)}></button></li> 
                     ))
                 ) : (
-                    <li>No hay tareas disponibles</li>
+                    <li className="list-group-item"></li>
                 )}
+                
             </ul>
+            <li className="list-footer-item shadow p-1  bg-body-tertiary rounded d-flex justify-content-between">
+                <span>{todos.length} items left</span></li>
+            </div>
         </>
     );
 };
