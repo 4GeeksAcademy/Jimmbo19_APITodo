@@ -49,8 +49,8 @@ const Prueba = () => {
         })
         .then((response) => response.text())
         .then((data) => {
-            console.log(data); 
-            setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id)); 
+            
+            setTodos(prevTodos => prevTodos.filter((todo,index) => index !== id)); 
         })
         .catch((error) => console.error(error));
     };
