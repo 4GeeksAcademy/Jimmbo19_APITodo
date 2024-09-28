@@ -42,7 +42,8 @@ const Prueba = () => {
     };
 
     const deleteItem = (id) => {
-        fetch(`https://playground.4geeks.com/todo/todos/${id}`, {
+        console.log('eliminaste' + id )
+        fetch(`https://playground.4geeks.com/todo/todos/Jaimelista/${id}`, {
               method: "DELETE",
                 redirect: "follow"
         })
@@ -72,7 +73,7 @@ const Prueba = () => {
                 {todos.length > 0 ? (
                     todos.map((todo, index) => (
                         <li className="list-group-item shadow p-3  bg-body-tertiary rounded d-flex justify-content-between" key={index}>{todo.label}  
-                        <button type="button" className="btn-close " aria-label="Close"  onClick={() => deleteItem(todo.id)}></button></li> 
+                        <button type="button" className="btn-close " aria-label="Close"  onClick={() => deleteItem(index)}></button></li> 
                     ))
                 ) : (
                     <li className="list-group-item"></li>
