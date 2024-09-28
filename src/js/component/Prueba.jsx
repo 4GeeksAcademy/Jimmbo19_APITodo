@@ -42,19 +42,20 @@ const Prueba = () => {
     };
 
     const deleteItem = (id) => {
-        console.log('eliminaste' + id )
-        fetch(`https://playground.4geeks.com/todo/todos/Jaimelista/${id}`, {
-              method: "DELETE",
-                redirect: "follow"
+        console.log('eliminaste' + id);
+        fetch(`https://playground.4geeks.com/todo/todos/${id}`, {
+            method: 'DELETE',
+            redirect: 'follow'
         })
-        .then((response) => response.text())
-        .then((data) => {
-            
-            setTodos(prevTodos => prevTodos.filter((todo,index) => index !== id)); 
+        .then(response => {
+            if (response.ok) {
+                setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id)); 
+            } else {
+                console.error('Failed to delete the todo');
+            }
         })
-        .catch((error) => console.error(error));
+        .catch(error => console.error('Error deleting todo:', error));
     };
-
 
     return (
         <>
@@ -73,7 +74,7 @@ const Prueba = () => {
                 {todos.length > 0 ? (
                     todos.map((todo, index) => (
                         <li className="list-group-item shadow p-3  bg-body-tertiary rounded d-flex justify-content-between" key={index}>{todo.label}  
-                        <button type="button" className="btn-close " aria-label="Close"  onClick={() => deleteItem(index)}></button></li> 
+                        <button type="button" className="btn-close " aria-label="Close"  onClick={() => deleteItem(todo.id)}></button></li> 
                     ))
                 ) : (
                     <li className="list-group-item"></li>
